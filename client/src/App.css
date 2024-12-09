@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.service-form-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.service-form-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: clamp(1.4rem, 4vw, 1.6rem);
+}
+
+.service-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.service-form label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.view-requests-link {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.view-requests-link a {
+    text-decoration: none;
+}
+
+/* ==================================== */
+
+.requests-display-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.requests-display-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.requests-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.request-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.request-card h3 {
+    margin: 0 0 10px;
+    color: #4caf50;
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.request-card p {
+    margin: 0;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+
+@media screen and (min-width: 768px) {
+    .requests-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==================================== */
+
+.auth-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.auth-card h2 {
+    margin-bottom: 10px;
+}
+
+.auth-card p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.google-icon {
+    height: 50px;
+    cursor: pointer;
+}
