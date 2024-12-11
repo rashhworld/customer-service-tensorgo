@@ -1,32 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
+import { getRequestsApi } from "../apis/process";
 
 const Request = () => {
   const { user, GoogleAuthButton } = useGoogleAuth();
+  const [requests, setRequests] = useState([]);
+  const [category, setCategory] = useState("");
 
-  const requests = [
-    {
-      id: 1,
-      category: "General Queries",
-      comments: "I have a question about your return policy.",
-    },
-    {
-      id: 2,
-      category: "Product Features Queries",
-      comments: "Does this product support Bluetooth?",
-    },
-    {
-      id: 3,
-      category: "Product Pricing Queries",
-      comments: "Can I get a discount on bulk purchases?",
-    },
-    {
-      id: 4,
-      category: "Product Feature Implementation Requests",
-      comments: "Can you add dark mode to your application?",
-    },
-  ];
+  useEffect(() => {
+    const fetchRequests = async () => {
+      const res = await getRequestsApi(user, category);
+      if (res) setRequests(res);
+    };
+    fetchRequests();
+  }, [user, category]);
 
   return (
     <div className="requests-display-container">
@@ -36,15 +24,41 @@ const Request = () => {
         </p>
       )}
       <h2>All Service Requests</h2>
-      {user ? (
-        <div className="requests-grid">
-          {requests.map((request) => (
-            <div key={request.id} className="request-card">
-              <h3>{request.category}</h3>
-              <p>{request.comments}</p>
-            </div>
-          ))}
+      <div className="response-header">
+        <div className="">
+          <select
+            id="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="form-input"
+          >
+            <option value="">Select a category</option>
+            <option value="General Queries">General Queries</option>
+            <option value="Product Features Queries">
+              Product Features Queries
+            </option>
+            <option value="Product Pricing Queries">
+              Product Pricing Queries
+            </option>
+            <option value="Product Feature Implementation Requests">
+              Product Feature Implementation Requests
+            </option>
+          </select>
         </div>
+      </div>
+      {user ? (
+        requests.conversations?.length > 0 ? (
+          <div className="requests-grid">
+            {requests.conversations?.map((request) => (
+              <div key={request.id} className="request-card">
+                <h3>{request.tags.tags[0].name}</h3>
+                <p dangerouslySetInnerHTML={{ __html: request.source.body }} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="no-requests-found">No service requests found</p>
+        )
       ) : (
         <div className="google-auth-button">
           <p>Please sign in to view all requests</p>

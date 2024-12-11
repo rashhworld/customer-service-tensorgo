@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import axios from "axios";
+import { userAuthApi } from "../apis/process";
 
 export const useGoogleAuth = () => {
   const [user, setUser] = useState(() => {
@@ -13,14 +13,10 @@ export const useGoogleAuth = () => {
 
   const handleLogin = useCallback(
     async (response) => {
-      try {
-        const res = await axios.post(`${baseUrl}/auth/google`, response);
-        if (res) {
-          localStorage.setItem("user", JSON.stringify(res.data));
-          setUser(res.data);
-        }
-      } catch (error) {
-        console.error("Error:", error);
+      const res = await userAuthApi(response);
+      if (res) {
+        localStorage.setItem("user", JSON.stringify(res));
+        setUser(res);
       }
     },
     [baseUrl]

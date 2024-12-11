@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGoogleAuth } from "../hooks/useGoogleAuth";
+import { sendRequestApi } from "../apis/process";
 
 const Home = () => {
   const { user, GoogleAuthButton } = useGoogleAuth();
   const [request, setRequest] = useState({ category: "", comments: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!request.category || !request.comments) {
       alert("Please fill out all fields!");
       return;
     }
 
-    console.log("Request:", request);
-    setRequest({ category: "", comments: "" });
+    setLoading(true);
+    const res = await sendRequestApi(user, request.category, request.comments);
+    if (res) {
+      setRequest({ category: "", comments: "" });
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,7 +35,9 @@ const Home = () => {
           className="form-input"
           required
         >
-          <option value="">Select a category</option>
+          <option value="" hidden>
+            Select a category
+          </option>
           <option value="General Queries">General Queries</option>
           <option value="Product Features Queries">
             Product Features Queries
@@ -54,8 +62,8 @@ const Home = () => {
         />
 
         {user ? (
-          <button type="submit" className="submit-button">
-            Submit Request
+          <button type="submit" className="submit-button" disabled={loading}>
+            {loading ? "Submitting..." : "Submit Request"}
           </button>
         ) : (
           <div className="google-auth-button">
