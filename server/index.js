@@ -12,7 +12,7 @@ app.use(express.json());
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const intercomClient = new Client({ tokenAuth: { token: process.env.INTERCOM_ACCESS_TOKEN } });
 
-app.post('/auth/google', async (req, res) => {
+app.post('/user-auth', async (req, res) => {
     const { credential, clientId } = req.body;
     try {
         const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: clientId });
@@ -89,8 +89,19 @@ app.post('/get-requests', async (req, res) => {
     }
 });
 
+app.put('/update-requests', async (req, res) => {
+    const { conversationId, tagId, category, comments } = req.body;
+    try {
+        await intercomClient.tags.update({ id: tagId, name: category });
+        await intercomClient.conversations.update({ id: conversationId, body: comments });
+        res.status(200).json({ status: "success", msg: "Request updated successfully" });
+    } catch (error) {
+        res.status(500).json({ status: "error", msg: error.message });
+    }
+});
+
 app.get('/', (req, res) => {
-    res.send('API working well!');
+    res.status(200).send({ status: "success", msg: "API working well!" });
 });
 
 const port = 3000;

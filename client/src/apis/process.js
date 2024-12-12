@@ -3,7 +3,7 @@ const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export const userAuthApi = async (userData) => {
     try {
-        const response = await axios.post(`${baseURL}/auth/google`, userData);
+        const response = await axios.post(`${baseURL}/user-auth`, userData);
 
         const { status, data, msg } = response.data;
         return status === "success" ? (alert(msg), data) : (alert(msg), null);
